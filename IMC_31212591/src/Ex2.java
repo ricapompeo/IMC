@@ -8,11 +8,9 @@ import javax.swing.Icon;
 import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
-import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
-import java.util.InputMismatchException;
 
 public class Ex2 extends JFrame {
 
@@ -108,7 +106,29 @@ public class Ex2 extends JFrame {
     }
 
     //método que realiza os calculos
-    private void Calculos() {
+    public void calculoIMCMulher(){
+        massa = formulaIMC(Double.parseDouble(Faltura.getText()), Double.parseDouble(Fpeso.getText()));
+        
+        if (imc_mulheres[0] > massa) {
+                    string = String.format("CUIDADO!!!Voce estar abaixo do peso! IMC %.2f", massa);
+                    foto = 0;
+                } else if ((imc_mulheres[0] < massa) && (massa <= imc_mulheres[1])) {
+                    string = String.format("PARABENS!!Voce estar com o peso ideal! IMC %.2f", massa);
+                    foto = 1;
+                } else {
+                    string = String.format("CUIDADO!!Voce estar obesa! IMC %.2f", massa);
+                    foto = 2;
+                }
+                //configure a foto conforme a posição da variável foto
+                Lfoto.setIcon(imagemM[foto]);
+    }
+    
+    private double formulaIMC(double altura, double peso){
+        
+        return peso/(altura*altura);
+    }
+    
+    public double Calculos() {
         try //tratador de erros com try e catch
         {
             //pega e converte os caracteres em ponto flutuante do campo Faltura para a variavel altura
