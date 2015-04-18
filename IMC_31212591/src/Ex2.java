@@ -16,7 +16,7 @@ public class Ex2 extends JFrame {
 
     private String sexo[] = {"Mulher", "Homem"};
     int tipo, foto;
-    double altura, peso, massa;
+    double altura, peso, imc;
     double imc_homens[] = {20.7, 26.4};
     double imc_mulheres[] = {19.1, 25.8};
     private String string = "";
@@ -106,74 +106,27 @@ public class Ex2 extends JFrame {
     }
 
     //método que realiza os calculos
-    public void calculoIMCMulher(){
-        massa = formulaIMC(Double.parseDouble(Faltura.getText()), Double.parseDouble(Fpeso.getText()));
-        
-        if (imc_mulheres[0] > massa) {
-                    string = String.format("CUIDADO!!!Voce estar abaixo do peso! IMC %.2f", massa);
-                    foto = 0;
-                } else if ((imc_mulheres[0] < massa) && (massa <= imc_mulheres[1])) {
-                    string = String.format("PARABENS!!Voce estar com o peso ideal! IMC %.2f", massa);
-                    foto = 1;
-                } else {
-                    string = String.format("CUIDADO!!Voce estar obesa! IMC %.2f", massa);
-                    foto = 2;
-                }
-                //configure a foto conforme a posição da variável foto
-                Lfoto.setIcon(imagemM[foto]);
+    public void calcularIMC(){
+        imc = peso/(altura*altura);
     }
     
-    private double formulaIMC(double altura, double peso){
-        
-        return peso/(altura*altura);
-    }
-    
-    public double Calculos() {
+    public void Calculos() {
         try //tratador de erros com try e catch
         {
-            //pega e converte os caracteres em ponto flutuante do campo Faltura para a variavel altura
-            altura = Double.parseDouble(Faltura.getText());
-            //converte para metros
-            altura /= 100;
-            //da mesma forma com Fpeso para a variável peso
-            peso = Double.parseDouble(Fpeso.getText());
-            //realiza calculos
-            massa = peso / (altura * altura);
-            /*Se a massa corporal for menor do que o estabelecido pelo vetor configure a variável
-             string com essa frase*/
+            calcularIMC();
+            
             if (tipo == 0) {
-                if (imc_mulheres[0] > massa) {
-                    string = String.format("CUIDADO!!!Voce estar abaixo do peso! IMC %.2f", massa);
-                    foto = 0;
-                } else if ((imc_mulheres[0] < massa) && (massa <= imc_mulheres[1])) {
-                    string = String.format("PARABENS!!Voce estar com o peso ideal! IMC %.2f", massa);
-                    foto = 1;
-                } else {
-                    string = String.format("CUIDADO!!Voce estar obesa! IMC %.2f", massa);
-                    foto = 2;
-                }
-                //configure a foto conforme a posição da variável foto
-                Lfoto.setIcon(imagemM[foto]);
+                tratarIMCMulher();
             } else if (tipo == 1) {
-                if (imc_homens[0] > massa) {
-                    string = String.format("CUIDADO!!!Voce estar abaixo do peso! IMC %.2f", massa);
-                    //configura a posição que será exibido a imagem
-                    foto = 0;
-                } else if ((imc_homens[0] < massa) && (massa < imc_homens[1])) {
-                    string = String.format("PARABENS!!Voce estar com o peso ideal! IMC %.2f", massa);
-                    foto = 1;
-                } else {
-                    string = String.format("CUIDADO!!Voce estar obeso! IMC %.2f", massa);
-                    foto = 2;
-                }
-                //configure a foto conforme a posição da variável foto
-                Lfoto.setIcon(imagemH[foto]);
+                tratarImcHomem();
             }
+            //configure a foto conforme a posição da variável foto
+            Lfoto.setIcon(imagemM[foto]);
             //reconfigure o tamanho da tela
             setSize(370, 500);
             //configure a label Lresultado com a variável string
             Lresultado.setText(string);
-        } //caso ocorra uma excessão(erro) exiba uma mensagem nua caixa de mensagem
+        } //caso ocorra uma excessão(erro) exiba uma mensagem nua caixa de mensagem //caso ocorra uma excessão(erro) exiba uma mensagem nua caixa de mensagem //caso ocorra uma excessão(erro) exiba uma mensagem nua caixa de mensagem //caso ocorra uma excessão(erro) exiba uma mensagem nua caixa de mensagem //caso ocorra uma excessão(erro) exiba uma mensagem nua caixa de mensagem //caso ocorra uma excessão(erro) exiba uma mensagem nua caixa de mensagem //caso ocorra uma excessão(erro) exiba uma mensagem nua caixa de mensagem //caso ocorra uma excessão(erro) exiba uma mensagem nua caixa de mensagem
         catch (NumberFormatException exception) {
             JOptionPane.showMessageDialog(this, "No número inválido!\nEx: Use '.' ao invés de ',' para separar as casas decimais.", "ERROR FATAL!!!", JOptionPane.ERROR_MESSAGE);
             //limpe s campos e variáveis
@@ -181,6 +134,33 @@ public class Ex2 extends JFrame {
             Faltura.setText("");
             peso = 0;
             altura = 0;
+        }
+    }
+
+    public void tratarImcHomem() {
+        if (imc_homens[0] > imc) {
+            string = String.format("CUIDADO!!!Voce estar abaixo do peso! IMC %.2f", imc);
+            //configura a posição que será exibido a imagem
+            foto = 0;
+        } else if ((imc_homens[0] < imc) && (imc < imc_homens[1])) {
+            string = String.format("PARABENS!!Voce estar com o peso ideal! IMC %.2f", imc);
+            foto = 1;
+        } else {
+            string = String.format("CUIDADO!!Voce estar obeso! IMC %.2f", imc);
+            foto = 2;
+        }
+    }
+
+    public void tratarIMCMulher() {
+        if (imc_mulheres[0] > imc) {
+            string = String.format("CUIDADO!!!Voce estar abaixo do peso! IMC %.2f", imc);
+            foto = 0;
+        } else if ((imc_mulheres[0] < imc) && (imc <= imc_mulheres[1])) {
+            string = String.format("PARABENS!!Voce estar com o peso ideal! IMC %.2f", imc);
+            foto = 1;
+        } else {
+            string = String.format("CUIDADO!!Voce estar obesa! IMC %.2f", imc);
+            foto = 2;
         }
     }
 

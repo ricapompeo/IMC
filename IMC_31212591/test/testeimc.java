@@ -41,7 +41,6 @@ public class testeimc {
         Ex2 ex = new Ex2();
         
         ex.altura = 1.7;
-        ex.peso
         
     }
     
